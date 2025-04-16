@@ -45,7 +45,7 @@ export const AddContact = () => {
             inputPhoneRef.current.value = '';
             inputAddresRef.current.value = '';
 
-            navigate("/contactlist");
+            navigate("/");
         }
         else {
             alert('Please complete all required fields before submitting.');
@@ -54,9 +54,7 @@ export const AddContact = () => {
 
     return (
         <div className='container'>
-            <Link to='https://solid-chainsaw-q744qx7q99qr3vp5-3000.app.github.dev/contactlist'>
-                <button type="button" className="btn btn-dark text-white  m-5">Come back</button>
-            </Link>
+            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate("/")}>Come back</button>
             <form onSubmit={handleSubmit}>
                 <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
@@ -79,7 +77,6 @@ export const AddContact = () => {
                         type="submit"
                         className="col-12 col-sm-6 col-md-4 col-lg-4 btn btn-secondary my-4"
                         value="Add contact"
-                        onClick={handleSubmit}
                     />
                 </div>
             </form>

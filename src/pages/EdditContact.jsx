@@ -64,7 +64,7 @@ export const EdditContact = () => {
                     inputEmailRef.current.value = '';
                     inputPhoneRef.current.value = '';
                     inputAddressRef.current.value = '';
-                    navigate('/contactlist');
+                    navigate('/');
                 })
                 .catch((err) => {
                     console.error('Error en el loader:', err.message || err);
@@ -77,9 +77,7 @@ export const EdditContact = () => {
 
     return (
         <div className="container">
-            <Link to='https://solid-chainsaw-q744qx7q99qr3vp5-3000.app.github.dev/contactlist'>
-                <button type="button" className="btn btn-dark text-white  m-5">Come back</button>
-            </Link>
+            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate("/")}>Come back</button>
             <div className="row">
                 <form onSubmit={handleSubmit}>
                     <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >

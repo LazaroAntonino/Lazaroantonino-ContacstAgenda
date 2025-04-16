@@ -114,9 +114,7 @@ export const ContactList = () => {
                         ))}
                 </ul>
             </div>
-            <Link to="/addContact">
-                <button type="button" className="btn btn-dark text-white mt-3">Create new contact</button>
-            </Link>
+            <button type="button" className="btn btn-dark text-white mt-3" onClick={()=>navigate("/AddContact")}>Create new contact</button>
         </div>
     );
 }
