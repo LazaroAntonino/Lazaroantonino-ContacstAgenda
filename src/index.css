@@ -1,0 +1,29 @@
+.userImg {
+    border-radius: 50%;
+    width: 40%;
+}
+.body{
+    background-color:#f7f6f2;
+}
+
+.spamIcon {
+    cursor: pointer;
+}
+
+/* Estilo base del div */
+.zoom-div {
+    transition: transform 0.4s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2rem;
+    padding: 1rem;
+    background-color: #fffed8;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6
+}
+
+/* Estilo cuando el cursor está sobre el div */
+.zoom-div:hover {
+    transform: scale(1.05);
+}
