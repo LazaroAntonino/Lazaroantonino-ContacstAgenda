@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect,useState } from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 
@@ -7,10 +7,12 @@ export const EdditContact = () => {
 
     const navigate = useNavigate();
     const { slug, id } = useParams();
-    const inputNameRef = useRef(null);
-    const inputEmailRef = useRef(null);
-    const inputAddressRef = useRef(null);
-    const inputPhoneRef = useRef(null);
+    const [data, setData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        address: ''
+    });
 
     useEffect(() => {
         loader();
@@ -24,13 +26,15 @@ export const EdditContact = () => {
                 }
                 return resp.json();
             })
-            .then((data) => {
-                const filteredData = data.contacts.filter(el => el.id === Number(id)); // Filtramos antes de asignar.
-                if (filteredData.length > 0) { // Usamos el array filtrado directamente.
-                    inputNameRef.current.value = filteredData[0].name; // Asignamos el nombre al useRef.
-                    inputEmailRef.current.value = filteredData[0].email; // Asignamos el nombre al useRef.
-                    inputPhoneRef.current.value = filteredData[0].phone; // Asignamos el nombre al useRef.
-                    inputAddressRef.current.value = filteredData[0].address; // Asignamos el nombre al useRef.
+            .then((datos) => {
+                const filteredData = datos.contacts.filter(el => el.id === Number(id));
+                if (filteredData.length !== null) {
+                    setData({
+                        name: filteredData[0].name,
+                        email: filteredData[0].email,
+                        phone: filteredData[0].phone,
+                        address: filteredData[0].address
+                    });
                 }
             })
             .catch((err) => {
@@ -40,19 +44,13 @@ export const EdditContact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const contactData = {
-            name: inputNameRef.current.value.trim(),
-            phone: inputPhoneRef.current.value.trim(),
-            email: inputEmailRef.current.value.trim(),
-            address: inputAddressRef.current.value.trim(),
-        };
-        if (contactData.name.length > 3) {
+        if (data.name.length > 3) {
             fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(contactData),
+                body: JSON.stringify(data),
             })
                 .then((resp) => {
                     if (!resp.ok) throw new Error('Error al cargar los datos');
@@ -60,10 +58,7 @@ export const EdditContact = () => {
                 })
                 .then((data) => {
                     console.log(data);
-                    inputNameRef.current.value = '';
-                    inputEmailRef.current.value = '';
-                    inputPhoneRef.current.value = '';
-                    inputAddressRef.current.value = '';
+                    setData({ name: '', email: '', phone: '', address: '' })
                     navigate(`/contactlist/${slug}`);
                 })
                 .catch((err) => {
@@ -84,20 +79,21 @@ export const EdditContact = () => {
                 <form onSubmit={handleSubmit}>
                     <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border m-1' >
                         <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                            <label for="exampleInputName" class="form-label">Name <span className='text-danger'>*</span></label>
-                            <input type="text" maxLength='40' class="form-control" ref={inputNameRef} id="exampleInputName" aria-describedby="nameHelp" />
+                            <label htmlFor="exampleInputName" className="form-label">Name <span className='text-danger'>*</span></label>
+                            <input type="text" maxLength='40' className="form-control" value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} id="exampleInputName" aria-describedby="nameHelp" />
                         </div>
                         <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                            <label for="exampleInputEmail" class="form-label">Email</label>
-                            <input type="email" maxLength='40' class="form-control" ref={inputEmailRef} id="exampleInputEmail1" aria-describedby="emailHelp" />
+                            <label htmlFor="exampleInputEmail" className="form-label">Email</label>
+                            <input type="email" maxLength='40' className="form-control" value={data.email}  onChange={(e) => setData({ ...data, email: e.target.value })} id="exampleInputEmail1" aria-describedby="emailHelp" />
                         </div>
                         <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                            <label for="exampleInputPhone" class="form-label">Phone</label>
-                            <input type="number" maxLength='40' class="form-control" ref={inputPhoneRef} id="exampleInputPhone" aria-describedby="phoneHelp" />
+                            <label htmlFor="exampleInputPhone" className="form-label">Phone</label>
+                            <input type="number" maxLength='40' className="form-control" value={data.phone} onChange={(e) => setData({ ...data, phone: e.target.value })} id="exampleInputPhone" aria-describedby="phoneHelp" />
                         </div>
                         <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                            <label for="exampleInputAddress" class="form-label">Address</label>
-                            <input type="text" maxLength='40' class="form-control" ref={inputAddressRef} id="exampleInputAddress" aria-describedby="addressHelp" />
+                            <label htmlFor="exampleInputAddress" className="form-label">Address</label>
+                            <input type="text" maxLength='40' className="form-control" value={data.address} onChange={(e) => setData({ ...data, address: e.target.value })}
+                                id="exampleInputAddress" aria-describedby="addressHelp" />
                         </div>
                         <input type="submit" className="col-12 col-sm-6 col-md-4 col-lg-4 btn btn-secondary my-4" value={'Edit contact'} />
                     </div>

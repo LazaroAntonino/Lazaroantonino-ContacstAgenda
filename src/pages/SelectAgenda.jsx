@@ -49,7 +49,7 @@ export const SelectAgenda = () => {
         <div className='container'>
             <div className='row d-flex align-items-center flex-column mx-1'>
                 <button className='col-auto btn btn-success btn-small mt-4 ms-auto' onClick={() => navigate(`/createagenda`)}>Create new agenda</button>
-                <h3 className='text-center p-0 mt-5'><strong>AGENDAS</strong></h3>
+                <h3 className='text-center p-0 mt-5'><strong><u>AGENDAS</u></strong></h3>
             </div>
             <div className='row d-flex flex-colum mt-3 justify-content-center'>
                 {agendas.agendas?.map((el, index) => (

@@ -1,50 +1,40 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 
 
 export const AddContact = () => {
 
     const navigate = useNavigate();
-    const {slug} = useParams();
-
-    const inputNameRef = useRef(null);
-    const inputEmailRef = useRef(null);
-    const inputPhoneRef = useRef(null);
-    const inputAddresRef = useRef(null);
+    const { slug } = useParams();
+    const [data, setData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        address: ''
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const contactData = {
-            name: inputNameRef.current.value.trim(),
-            phone: inputPhoneRef.current.value.trim(),
-            email: inputEmailRef.current.value.trim(),
-            address: inputAddresRef.current.value.trim(),
-        };
 
-        if (contactData.name.length > 3) {
+        if (data.name.length > 3) {
             fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(contactData),
+                body: JSON.stringify(data),
             })
                 .then((resp) => {
                     if (!resp.ok) throw new Error('Error al cargar los datos');
                     return resp.json();
                 })
                 .then((data) => {
+                    setData({ name: '', email: '', phone: '', address: '' })
+                    navigate(`/contactlist/${slug}`);
                 })
                 .catch((err) => {
                     console.error('Error en el loader:', err.message || err);
                 });
-
-            inputNameRef.current.value = '';
-            inputEmailRef.current.value = '';
-            inputPhoneRef.current.value = '';
-            inputAddresRef.current.value = '';
-
-            navigate(`/contactlist/${slug}`);
         }
         else {
             alert('Please complete all required fields before submitting.');
@@ -53,24 +43,56 @@ export const AddContact = () => {
 
     return (
         <div className='container'>
-            <button type="button" className="btn btn-dark text-white  my-4 mx-1" onClick={()=>navigate(`/contactlist/${slug}`)}>Come back</button>
+            <button type="button" className="btn btn-dark text-white my-4 mx-1" onClick={() => navigate(`/contactlist/${slug}`)}>Come back</button>
             <form onSubmit={handleSubmit} className='mx-1'>
-                <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >
+                <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border'>
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                        <label for="exampleInputName" class="form-label">Name <span className='text-danger'>*</span></label>
-                        <input type="text" class="form-control" maxLength='40' ref={inputNameRef} id="exampleInputName" aria-describedby="nameHelp" />
+                        <label htmlFor="exampleInputName" className="form-label">Name <span className='text-danger'>*</span></label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            maxLength='40'
+                            id="exampleInputName"
+                            aria-describedby="nameHelp"
+                            value={data.name}
+                            onChange={(e) => setData({ ...data, name: e.target.value })}
+                        />
                     </div>
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                        <label for="exampleInputEmail" class="form-label">Email</label>
-                        <input type="email" maxLength='40' class="form-control" ref={inputEmailRef} id="exampleInputEmail1" aria-describedby="emailHelp" />
+                        <label htmlFor="exampleInputEmail" className="form-label">Email</label>
+                        <input
+                            type="email"
+                            maxLength='40'
+                            className="form-control"
+                            id="exampleInputEmail1"
+                            aria-describedby="emailHelp"
+                            value={data.email}
+                            onChange={(e) => setData({ ...data, email: e.target.value })}
+                        />
                     </div>
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                        <label for="exampleInputPhone" class="form-label">Phone</label>
-                        <input type="number" maxLength='40' class="form-control" ref={inputPhoneRef} id="exampleInputPhone" aria-describedby="phoneHelp" />
+                        <label htmlFor="exampleInputPhone" className="form-label">Phone</label>
+                        <input
+                            type="number"
+                            maxLength='40'
+                            className="form-control"
+                            id="exampleInputPhone"
+                            aria-describedby="phoneHelp"
+                            value={data.phone}
+                            onChange={(e) => setData({ ...data, phone: e.target.value })}
+                        />
                     </div>
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
-                        <label for="exampleInputAddress" class="form-label">Address</label>
-                        <input type="text" maxLength='40' class="form-control" ref={inputAddresRef} id="exampleInputAddress" aria-describedby="addressHelp" />
+                        <label htmlFor="exampleInputAddress" className="form-label">Address</label>
+                        <input
+                            type="text"
+                            maxLength='40'
+                            className="form-control"
+                            id="exampleInputAddress"
+                            aria-describedby="addressHelp"
+                            value={data.address}
+                            onChange={(e) => setData({ ...data, address: e.target.value })}
+                        />
                     </div>
                     <input
                         type="submit"

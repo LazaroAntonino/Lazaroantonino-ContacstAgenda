@@ -53,19 +53,19 @@ export const ContactList = () => {
     };
 
     return (
-        <div className="container text-center my-5">
+        <div className="container text-center">
             <div className='row'>
                 <button type="button" className=" col-auto mx-1 btn btn-dark text-white  m-5" onClick={() => navigate(`/`)}>Come back</button>
             </div>
             <div className='row'>
-                <h2 className="my-2"><u>Contacts</u></h2>
+                <h2 className="my-2"><u>{`${slug} Agenda`}</u></h2>
             </div>
             <div className="row">
                 <ul className="list-group list-group-flush p-0 align-items-center">
                     {contacts.contacts &&
                         contacts.contacts?.map((element) => (
                             <li
-                                className="list-group-item mt-1 px-0 d-flex flex-column align-items-center col-12 col-md-8 col-lg-6"
+                                className="list-group-item mt-1 px-0 d-flex flex-column align-items-center col-12 col-md-8 col-lg-8"
                                 key={element.id}
                             >
                                 <div className="zoom-div mx-3 my-4">
