@@ -26,31 +26,45 @@ export const SelectAgenda = () => {
                 console.error('Error en el loader:', err);
             });
     }
+    const handleDelete = async (slug) => {
+        try {
+            const response = await fetch(`https://playground.4geeks.com/contact/agendas/${slug}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar el contacto');
+            }
+
+            loadContact(); // Llamar a la función loader() si todo sale bien.
+        } catch (err) {
+            console.error('Estoy en el CATCH Error en el proceso:', err.message || err);
+        }
+    };
 
     return (
-        <div className='d-flex align-items-center flex-column'>
-            <div className='d-flex flex-colum w-100 m-4 justify-content-center'>
-                <h3 className='m-5'><strong>AGENDAS</strong></h3>
-                <button className='btn btn-success h-25 ms-5'>Create new agenda</button>
+        <div className='container'>
+            <div className='row d-flex align-items-center flex-column mx-1'>
+                <button className='col-auto btn btn-success btn-small mt-4 ms-auto' onClick={() => navigate(`/createagenda`)}>Create new agenda</button>
+                <h3 className='text-center p-0 mt-5'><strong>AGENDAS</strong></h3>
             </div>
-            {agendas.agendas?.map((el, index) => (
-                <li
-                    className="list-group-item px-0 d-flex w-75 flex-column align-items-center col-12 col-md-8 col-lg-6"
-                    key={index}
-                    onClick={() => navigate(`/contactlist/${el.slug}`)}
-                >
-                    <div className="zoom-div w-50">
-                        <div className="row align-items-center w-100">
-                            <div className="col-12 col-md-8 text-start d-flex justify-content-around align-items-center justify-content-center">
-                                <span class="fa-solid fa-calendar"></span>
-                                <p className="m-0"><strong>Agenda of:</strong> {el.slug}</p>
-                            </div>
+            <div className='row d-flex flex-colum mt-3 justify-content-center'>
+                {agendas.agendas?.map((el, index) => (
+                    <li
+                        className="list-group-item d-flex flex-column col-12 col-md-8 col-lg-8"
+                        key={index}
+                    >
+                        <div className="zoom-div text-center">
+                            <span className="fa-solid fa-calendar me-5"></span>
+                            <p className="m-0 spamIcon" onClick={() => navigate(`/contactlist/${el.slug}`)}><strong>Agenda of:</strong> <u>{el.slug}</u></p>
+                            <span className='text-danger fa-solid fa-trash ms-3 spamIcon' onClick={() => handleDelete(el.slug)}></span>
                         </div>
-                        <div className="d-flex justify-content-center justify-content-md-end mt-3">
-                        </div>
-                    </div>
-                </li>
-            ))}
+                    </li>
+                ))}
+            </div>
         </div>
     );
 }

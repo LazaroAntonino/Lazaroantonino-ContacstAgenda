@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const EdditContact = () => {
 
     const navigate = useNavigate();
-    const { slug , id } = useParams();
+    const { slug, id } = useParams();
     const inputNameRef = useRef(null);
     const inputEmailRef = useRef(null);
     const inputAddressRef = useRef(null);
@@ -77,10 +77,12 @@ export const EdditContact = () => {
 
     return (
         <div className="container">
-            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate(`/contactlist/${slug}`)}>Come back</button>
+            <div className="row">
+                <button type="button" className=" col-auto btn btn-dark text-white my-5 mx-1" onClick={() => navigate(`/contactlist/${slug}`)}>Come back</button>
+            </div>
             <div className="row">
                 <form onSubmit={handleSubmit}>
-                    <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >
+                    <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border m-1' >
                         <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
                             <label for="exampleInputName" class="form-label">Name <span className='text-danger'>*</span></label>
                             <input type="text" maxLength='40' class="form-control" ref={inputNameRef} id="exampleInputName" aria-describedby="nameHelp" />

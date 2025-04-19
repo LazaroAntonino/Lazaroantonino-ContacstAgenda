@@ -53,8 +53,8 @@ export const AddContact = () => {
 
     return (
         <div className='container'>
-            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate(`/contactlist/${slug}`)}>Come back</button>
-            <form onSubmit={handleSubmit}>
+            <button type="button" className="btn btn-dark text-white  my-4 mx-1" onClick={()=>navigate(`/contactlist/${slug}`)}>Come back</button>
+            <form onSubmit={handleSubmit} className='mx-1'>
                 <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>
                         <label for="exampleInputName" class="form-label">Name <span className='text-danger'>*</span></label>

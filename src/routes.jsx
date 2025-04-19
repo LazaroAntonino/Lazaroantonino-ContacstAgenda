@@ -13,6 +13,7 @@ import { ContactList } from "./pages/ContactList";
 import { AddContact } from "./pages/AddContact";
 import { EdditContact } from "./pages/EdditContact";
 import { SelectAgenda } from "./pages/SelectAgenda";
+import { CreateAgenda } from "./pages/CreateAgenda";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
         <Route path="/AddContact/:slug" element={<AddContact/>}/>
         <Route path="/EdditContact/:slug/:id" element={<EdditContact/>}/>
         <Route path="/" element={<SelectAgenda/>}/>
+        <Route path="/createagenda" element={<CreateAgenda/>}/>
       </Route>
     )
 );
