@@ -12,6 +12,7 @@ import { Demo } from "./pages/Demo";
 import { ContactList } from "./pages/ContactList";
 import { AddContact } from "./pages/AddContact";
 import { EdditContact } from "./pages/EdditContact";
+import { SelectAgenda } from "./pages/SelectAgenda";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -23,11 +24,12 @@ export const router = createBrowserRouter(
       // Root Route: All navigation will start from here.
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<ContactList/>} />
+        <Route path= "/contactlist/:slug" element={<ContactList/>} />
         <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
         <Route path="/demo" element={<Demo />} />
-        <Route path="/AddContact" element={<AddContact/>}/>
-        <Route path="/EdditContact/:id" element={<EdditContact/>}/>
+        <Route path="/AddContact/:slug" element={<AddContact/>}/>
+        <Route path="/EdditContact/:slug/:id" element={<EdditContact/>}/>
+        <Route path="/" element={<SelectAgenda/>}/>
       </Route>
     )
 );

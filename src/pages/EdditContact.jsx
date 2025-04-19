@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const EdditContact = () => {
 
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { slug , id } = useParams();
     const inputNameRef = useRef(null);
     const inputEmailRef = useRef(null);
     const inputAddressRef = useRef(null);
@@ -17,7 +17,7 @@ export const EdditContact = () => {
     }, [])
 
     const loader = () => {
-        fetch('https://playground.4geeks.com/contact/agendas/Antonino/contacts')
+        fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts`)
             .then((resp) => {
                 if (!resp.ok) {
                     throw new Error('Error al cargar los datos');
@@ -47,7 +47,7 @@ export const EdditContact = () => {
             address: inputAddressRef.current.value.trim(),
         };
         if (contactData.name.length > 3) {
-            fetch(`https://playground.4geeks.com/contact/agendas/Antonino/contacts/${id}`, {
+            fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const EdditContact = () => {
                     inputEmailRef.current.value = '';
                     inputPhoneRef.current.value = '';
                     inputAddressRef.current.value = '';
-                    navigate('/');
+                    navigate(`/contactlist/${slug}`);
                 })
                 .catch((err) => {
                     console.error('Error en el loader:', err.message || err);
@@ -77,7 +77,7 @@ export const EdditContact = () => {
 
     return (
         <div className="container">
-            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate("/")}>Come back</button>
+            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate(`/contactlist/${slug}`)}>Come back</button>
             <div className="row">
                 <form onSubmit={handleSubmit}>
                     <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >

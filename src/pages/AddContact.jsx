@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 export const AddContact = () => {
 
     const navigate = useNavigate();
+    const {slug} = useParams();
 
     const inputNameRef = useRef(null);
     const inputEmailRef = useRef(null);
@@ -22,8 +22,7 @@ export const AddContact = () => {
         };
 
         if (contactData.name.length > 3) {
-            fetch('https://playground.4geeks.com/contact/agendas/Antonino/contacts', {
-
+            fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,7 +44,7 @@ export const AddContact = () => {
             inputPhoneRef.current.value = '';
             inputAddresRef.current.value = '';
 
-            navigate("/");
+            navigate(`/contactlist/${slug}`);
         }
         else {
             alert('Please complete all required fields before submitting.');
@@ -54,7 +53,7 @@ export const AddContact = () => {
 
     return (
         <div className='container'>
-            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate("/")}>Come back</button>
+            <button type="button" className="btn btn-dark text-white  m-5" onClick={()=>navigate(`/contactlist/${slug}`)}>Come back</button>
             <form onSubmit={handleSubmit}>
                 <div className='row d-flex justify-content-center p-3 pt-0 bg-light rounded border' >
                     <div className='col-12 col-sm-6 col-md-4 col-lg-4 m-4'>

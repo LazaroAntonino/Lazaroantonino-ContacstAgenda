@@ -1,40 +1,20 @@
-import React, { useEffect } from 'react';
-import useGlobalReducer from '../hooks/useGlobalReducer';
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 export const ContactList = () => {
     // Ejemplo de contactos iniciales
-    const { store, dispatch } = useGlobalReducer();
+    const [contacts, setContacts] = useState([]);
     const navigate = useNavigate();
-
-    const createAntoninoAgenda = () => {
-        fetch('https://playground.4geeks.com/contact/agendas/Antonino', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((resp) => {
-                if (!resp.ok) throw new Error('Error al cargar los datos');
-                return resp.json();
-            })
-            .then((data) => {
-                alert('Contacto Creado!!!');
-            })
-            .catch((err) => {
-                console.error('Error en el loader:', err.message || err);
-            });
-    }
-
+    const { slug } = useParams();
 
     useEffect(() => {
+        console.log(`Slug: ${slug}`);
         loader();
     }, [])
 
     const loader = () => {
-        fetch('https://playground.4geeks.com/contact/agendas/Antonino/contacts')
+        fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts`)
             .then((resp) => {
                 if (!resp.ok) {
                     throw new Error('Error al cargar los datos');
@@ -42,20 +22,20 @@ export const ContactList = () => {
                 return resp.json();
             })
             .then((data) => {
-                dispatch({ type: 'contactListData', payload: data });
+                console.log(data);
+                setContacts(data);
             })
             .catch((err) => {
-                createAntoninoAgenda();
                 console.error('Error en el loader:', err);
             });
     };
 
     const goToEditPage = (id) => {
-        navigate(`/EdditContact/${id}`);
+        navigate(`/EdditContact/${slug}/${id}`);
     };
 
     const handleDelete = (id) => {
-        fetch(`https://playground.4geeks.com/contact/agendas/Antonino/contacts/${id}`, {
+        fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,11 +54,12 @@ export const ContactList = () => {
 
     return (
         <div className="container text-center my-5">
+            <button type="button" className="btn btn-dark text-white  m-5" onClick={() => navigate(`/`)}>Come back</button>
             <h2 className="my-2">Contacts</h2>
             <div className="row">
                 <ul className="list-group list-group-flush p-0 align-items-center">
-                    {store.contacts &&
-                        store.contacts.map((element) => (
+                    {contacts.contacts &&
+                        contacts.contacts?.map((element) => (
                             <li
                                 className="list-group-item mt-1 px-0 d-flex w-75 flex-column align-items-center col-12 col-md-8 col-lg-6"
                                 key={element.id}
@@ -114,7 +95,7 @@ export const ContactList = () => {
                         ))}
                 </ul>
             </div>
-            <button type="button" className="btn btn-dark text-white mt-3" onClick={()=>navigate("/AddContact")}>Create new contact</button>
+            <button type="button" className="btn btn-dark text-white mt-3" onClick={() => navigate(`/AddContact/${slug}`)}>Create new contact</button>
         </div>
     );
 }
