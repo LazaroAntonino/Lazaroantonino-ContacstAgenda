@@ -1,15 +1,21 @@
 export const initialStore = () => {
   return {
     contacts: null,
+    agendas: null,
   };
 };
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
-    case 'contactListData':
+    case 'get_agendas':
       return {
         ...store,
-        contacts: action.payload.contacts || null, // Accede al primer elemento del array y su propiedad 'slug'
+        agendas: action.payload
+      };
+    case 'get_agenda_by_slug':
+      return {
+        ...store,
+        agenda: action.payload
       };
     default:
       throw Error('Unknown action.');

@@ -1,49 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import contactServices from '../services/contactServices';
+import useGlobalReducer from '../hooks/useGlobalReducer';
 
 export const SelectAgenda = () => {
 
-    const [agendas, setagendas] = useState([]);
-    const navigate = useNavigate();
+    const {store,dispatch} = useGlobalReducer();
+        const navigate = useNavigate();
 
     useEffect(() => {
-        loadContact();
+        loadData();
     }, []);
 
-    const loadContact = async () => {
-        fetch('https://playground.4geeks.com/contact/agendas/')
-            .then((resp) => {
-                if (!resp.ok) {
-                    throw new Error('Error al cargar los datos');
-                }
-                return resp.json();
-            })
-            .then((data) => {
-                setagendas(data);
-                console.log(data);
-            })
-            .catch((err) => {
-                console.error('Error en el loader:', err);
-            });
-    }
-    const handleDelete = async (slug) => {
+    const loadData = async () => {
         try {
-            const response = await fetch(`https://playground.4geeks.com/contact/agendas/${slug}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al eliminar el contacto');
-            }
-
-            loadContact(); // Llamar a la función loader() si todo sale bien.
-        } catch (err) {
-            console.error('Estoy en el CATCH Error en el proceso:', err.message || err);
+            const resp = await contactServices.getAgendas();
+            dispatch({type: 'get_agendas', payload: resp.agendas})
+        } catch (error) {
+            console.log(error);
         }
-    };
+    }
+
+    const deleteAgenda = async (slug) => {
+        try {
+            const resp = await contactServices.deleteAgenda(slug);
+            loadData();
+        }catch (error){
+            console.log(error);
+        }
+    }
 
     return (
         <div className='container'>
@@ -52,7 +37,7 @@ export const SelectAgenda = () => {
                 <h3 className='text-center p-0 mt-5'><strong><u>AGENDAS</u></strong></h3>
             </div>
             <div className='row d-flex flex-colum mt-3 justify-content-center'>
-                {agendas.agendas?.map((el, index) => (
+                {store.agendas?.map((el, index) => (
                     <li
                         className="list-group-item d-flex flex-column col-12 col-md-8 col-lg-8"
                         key={index}
@@ -60,7 +45,7 @@ export const SelectAgenda = () => {
                         <div className="zoom-div text-center">
                             <span className="fa-solid fa-calendar me-5"></span>
                             <p className="m-0 spamIcon" onClick={() => navigate(`/contactlist/${el.slug}`)}><strong>Agenda of:</strong> <u>{el.slug}</u></p>
-                            <span className='text-danger fa-solid fa-trash ms-3 spamIcon' onClick={() => handleDelete(el.slug)}></span>
+                            <span className='text-danger fa-solid fa-trash ms-3 spamIcon' onClick={() => deleteAgenda(el.slug)}></span>
                         </div>
                     </li>
                 ))}
