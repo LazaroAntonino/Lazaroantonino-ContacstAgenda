@@ -35,16 +35,39 @@ export const CreateAgenda = () => {
     return (
         <div className="container text-center">
             <div className="row">
-                <button type="button" className="col-auto btn btn-dark text-white  m-5" onClick={() => navigate(`/`)}>Come back</button>
+                <div className="col-12">
+                    <button
+                        type="button"
+                        className="btn btn-dark text-white my-3"
+                        onClick={() => navigate(`/`)}
+                    >
+                        Come back
+                    </button>
+                </div>
             </div>
             <div>
                 <h3 className="my-4">Create Your Own Agenda!</h3>
             </div>
-            <div className="row mx-1">
-                <form onSubmit={handleSubmit} className="bg-light rounded border text-center p-4 d-flex justify-content-center align-content-center">
-                    <input className="col-auto mx-2 rounded border-1" type="text" value={agendaName} placeholder="Name your agenda" onChange={e => setAgendaName(e.target.value)} />
-                    <input className='col-auto btn btn-success mx-2' type="submit" value={'Create agenda'} />
-                </form>
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-8">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="bg-light rounded border p-4 d-flex flex-column flex-md-row justify-content-center align-items-center"
+                    >
+                        <input
+                            className="form-control mx-2 my-2 my-md-0 rounded border-1"
+                            type="text"
+                            value={agendaName}
+                            placeholder="Name your agenda"
+                            onChange={(e) => setAgendaName(e.target.value)}
+                        />
+                        <input
+                            className="btn btn-success mx-2 my-2 my-md-0"
+                            type="submit"
+                            value="Create agenda"
+                        />
+                    </form>
+                </div>
             </div>
         </div>
     )
